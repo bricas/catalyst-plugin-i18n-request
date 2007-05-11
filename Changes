@@ -1,0 +1,7 @@
+Revision history for Perl extension Catalyst::Plugin::I18N::Request.
+
+0.02  Thu Sep 21, 2006
+    - Fixed multi-valued parameter issue
+
+0.01  Thu Aug 17 2006
+	- original version;
