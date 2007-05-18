@@ -5,7 +5,8 @@ use warnings;
 use URI;
 use URI::QueryParam;
 use utf8;
-use Scalar::Util qw( blessed );
+use Scalar::Util ();
+
 our $VERSION = '0.03';
 
 =head1 NAME
@@ -143,15 +144,9 @@ sub setup {
         my ($request) = @_;
         my $uri = $uri_with->( @_ );
         
-        if ( my $c = $request->{context} ) {
-            $uri = $c->localize_uri( $uri );
-        }
-        
-        return $uri;
+        return $request->{_context}->localize_uri( $uri );
     };
 }
-
-
 
 =head2 uri_for ( $path [, @args ] [, \%query_values ] )
 
@@ -165,8 +160,6 @@ sub uri_for {
     $c->localize_uri( $c->NEXT::uri_for( @_ ) );
 }
 
-
-
 =head2 localize_uri ( $uri )
 
 Localizes a URI using the current context.
@@ -177,7 +170,7 @@ sub localize_uri {
     my ($c, $uri) = @_;
     return undef unless defined $uri;
     
-    $uri = URI->new( $uri ) unless blessed $uri;
+    $uri = URI->new( $uri ) unless Scalar::Util::blessed( $uri );
     
     # parameters
     my $query_form = $uri->query_form_hash;
@@ -209,8 +202,6 @@ sub localize_uri {
     return $uri;
 }
 
-
-
 =head2 localize_path ( $path )
 
 Localizes all components of the provided path. 
@@ -223,8 +214,6 @@ sub localize_path {
     return join '/', map { $c->localize_path_component( $_ ) } split m!/!, $path;
 }
 
-
-
 =head2 delocalize_path ( $path )
 
 Delocalizes all components of the provided path.
@@ -236,8 +225,6 @@ sub delocalize_path {
     return undef unless defined $path;
     return join '/', map { $c->delocalize_path_component( $_ ) } split m!/!, $path;
 }
-
-
 
 =head2 transform_parameters ( \%parameters, $transformer )
 
@@ -284,7 +271,6 @@ sub transform_parameters {
     return wantarray ? %transformed : \%transformed;
 }
 
-
 =head2 localize_parameters ( \%parameters )
 
 Localizes the keys within a hash of parameters. 
@@ -311,23 +297,6 @@ sub delocalize_parameters {
 }
 
 
-
-=head2 prepare_request ( )
-
-Establishes a reference in the request back to its associated context 
-object. This is required to enable localization within the uri_with 
-method of Catalyst::Request. 
-
-=cut
-
-sub prepare_request {
-    my $c = shift;
-    $c->NEXT::prepare_request( @_ );
-    $c->req->{ context } = $c;
-}
-
-
-
 =head2 prepare_path ( )
 
 Delocalizes the requested path. 
@@ -339,8 +308,6 @@ sub prepare_path {
     $c->NEXT::prepare_path( @_ );
     $c->req->path( $c->delocalize_path( $c->req->path ) );
 }
-
-
 
 =head2 prepare_parameters ( )
 
@@ -357,23 +324,6 @@ sub prepare_parameters {
     $c->request->uri->query_form( \%parameters );
     $c->request->params( \%parameters );
 }
-
-
-
-=head2 finalize( )
-
-Deletes the request's reference to its associated context object. This 
-is very important, as it avoids memory leaks. 
-
-=cut
-
-sub finalize {
-    my $c = shift;
-    delete $c->req->{ context };
-    $c->NEXT::finalize( @_ );
-}
-
-
 
 =head2 localize_path_component ( $delocalized )
 
@@ -394,8 +344,6 @@ sub localize_path_component {
     return $delocalized;
 }
 
-
-
 =head2 delocalize_path_component ( $localized )
 
 Delocalizes a component of a path. 
@@ -415,8 +363,6 @@ sub delocalize_path_component {
     return $localized;
 }
 
-
-
 =head2 localize_parameter_name ( $delocalized )
 
 Localizes a parameter name. 
@@ -435,8 +381,6 @@ sub localize_parameter_name {
     
     return $delocalized;
 }
-
-
 
 =head2 delocalize_parameter_name ( $localized )
 
