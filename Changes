@@ -1,6 +1,6 @@
 Revision history for Perl extension Catalyst::Plugin::I18N::Request.
 
-0.03  Fri May 19 2007
+0.03  Fri May 18 2007
     - remove custom context key for requests
 
 0.02  Thu Sep 21 2006
