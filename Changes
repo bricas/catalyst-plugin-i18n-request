@@ -1,5 +1,9 @@
 Revision history for Perl extension Catalyst::Plugin::I18N::Request.
 
+0.04  Thu Jan 15 2009
+    - switch to Module::Install
+    - use MRO::Compat
+
 0.03  Fri May 18 2007
     - remove custom context key for requests
 

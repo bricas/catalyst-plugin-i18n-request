@@ -2,12 +2,14 @@ package Catalyst::Plugin::I18N::Request;
 
 use strict;
 use warnings;
+
+use MRO::Compat;
 use URI;
 use URI::QueryParam;
 use utf8;
 use Scalar::Util ();
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 =head1 NAME
 
@@ -133,7 +135,7 @@ Allows Catalyst::Request to localize the results of calls to uri_with.
 
 sub setup {
     my $self = shift;
-    $self->NEXT::setup( @_ );
+    $self->next::method( @_ );
     
     no strict 'refs';
     no warnings 'redefine';
@@ -157,7 +159,7 @@ and query values.
 
 sub uri_for {
     my $c = shift;
-    $c->localize_uri( $c->NEXT::uri_for( @_ ) );
+    $c->localize_uri( $c->next::method( @_ ) );
 }
 
 =head2 localize_uri ( $uri )
@@ -305,7 +307,7 @@ Delocalizes the requested path.
 
 sub prepare_path {
     my $c = shift;
-    $c->NEXT::prepare_path( @_ );
+    $c->next::method( @_ );
     $c->req->path( $c->delocalize_path( $c->req->path ) );
 }
 
@@ -317,7 +319,7 @@ Delocalizes the requested parameter names.
 
 sub prepare_parameters {
     my $c = shift;
-    $c->NEXT::prepare_parameters( @_ );
+    $c->next::method( @_ );
     
     my %parameters = $c->delocalize_parameters( $c->request->params );
     
@@ -405,19 +407,21 @@ sub delocalize_parameter_name {
 
 =over 4
 
-=item * Catalyst::Plugin::I18N
+=item * L<Catalyst::Plugin::I18N>
 
-=item * Catalyst
+=item * L<Catalyst>
 
 =back
 
-=head1 AUTHOR
+=head1 AUTHORS
 
 Adam Paynter E<lt>adapay@cpan.orgE<gt>
 
+Brian Cassidy E<lt>bricas@cpan.orgE<gt>
+
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2006 by Adam Paynter
+Copyright 2006-2009 by Adam Paynter, Brian Cassidy
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself. 
