@@ -13,6 +13,7 @@ requires 'Catalyst::Runtime' => '5.7000';
 requires 'Catalyst::Plugin::I18N';
 requires 'URI';
 requires 'Scalar::Util';
+requires 'MRO::Compat';
 
 test_requires 'Test::More';
 

@@ -1,5 +1,8 @@
 Revision history for Perl extension Catalyst::Plugin::I18N::Request.
 
+0.05  Sun Jan 18 2008
+    - Add MRO::Compat too prereqs
+
 0.04  Thu Jan 15 2009
     - switch to Module::Install
     - use MRO::Compat
