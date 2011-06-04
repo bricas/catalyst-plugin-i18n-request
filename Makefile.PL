@@ -1,4 +1,4 @@
-use inc::Module::Install 0.77;
+use inc::Module::Install 1.00;
 
 if( -e 'MANIFEST.SKIP' ) {
     system( 'pod2text lib/Catalyst/Plugin/I18N/Request.pm > README' );
@@ -16,5 +16,7 @@ requires 'Scalar::Util';
 requires 'MRO::Compat';
 
 test_requires 'Test::More';
+
+repository 'http://github.com/bricas/catalyst-plugin-i18n-request';
 
 WriteAll;
