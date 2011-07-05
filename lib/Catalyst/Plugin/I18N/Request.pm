@@ -9,7 +9,7 @@ use URI::QueryParam;
 use utf8;
 use Scalar::Util ();
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 =head1 NAME
 
@@ -18,16 +18,13 @@ paths and parameters.
 
 =head1 SYNOPSIS
     
-    
     package My::App;
     
     use Catalyst qw( ConfigLoader Static::Simple I18N I18N::Request );
     
     1;
     
-    
     ...
-    
     
     package My::App::Controller::Root;
     
@@ -39,11 +36,7 @@ paths and parameters.
         # yadda, yadda, yadda...
     }
     
-    
-    
     ...
-    
-    
     
     French:
         
@@ -70,9 +63,7 @@ paths and parameters.
             
         $c->uri_for('/search'):
             http://localhost/suche
-    
-    
-    
+
 =head1 DESCRIPTION
 
 This plugin is designed to work alongside Catalyst::Plugin::I18N in 
@@ -421,7 +412,7 @@ Brian Cassidy E<lt>bricas@cpan.orgE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2006-2009 by Adam Paynter, Brian Cassidy
+Copyright 2006-2011 by Adam Paynter, Brian Cassidy
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself. 
