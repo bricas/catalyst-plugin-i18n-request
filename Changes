@@ -1,5 +1,9 @@
 Revision history for Perl extension Catalyst::Plugin::I18N::Request.
 
+0.07  2012-02-20
+    [TEMPORARY FIX]
+    - Put context object back in Request object for Catalyst >= 5.90009
+
 0.06  2011-07-04
     - Fix test suite
 

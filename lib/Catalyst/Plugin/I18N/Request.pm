@@ -9,7 +9,7 @@ use URI::QueryParam;
 use utf8;
 use Scalar::Util ();
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 =head1 NAME
 
@@ -139,6 +139,24 @@ sub setup {
         
         return $request->{_context}->localize_uri( $uri );
     };
+}
+
+=head2 prepare ( )
+
+Overrides Catalyst's C<prepare> method to push the context object to the request
+object.
+
+=cut
+
+sub prepare {
+    my $c = shift;
+    $c = $c->next::method( @_ );
+
+    unless( $c->request->{ _context } ) {
+        Scalar::Util::weaken( $c->request->{ _context } = $c );
+    }
+
+    return $c;
 }
 
 =head2 uri_for ( $path [, @args ] [, \%query_values ] )
@@ -412,7 +430,7 @@ Brian Cassidy E<lt>bricas@cpan.orgE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2006-2011 by Adam Paynter, Brian Cassidy
+Copyright 2006-2012 by Adam Paynter, Brian Cassidy
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself. 
